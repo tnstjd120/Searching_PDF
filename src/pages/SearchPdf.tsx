@@ -35,8 +35,6 @@ const RightArea = styled(Box)`
   height: 100%;
 
   .reflex-element {
-    padding: 1px;
-    /* padding: 10px; */
   }
 `;
 
@@ -48,11 +46,11 @@ const StyledSearchPdf = styled(Box)`
 `;
 
 const StyledReflexSplitter = styled(ReflexSplitter)`
-  width: 8px !important;
-  height: calc(100% - 4px) !important;
-  border-radius: 2px;
-  border: 0 !important;
-  margin-top: 2px;
+  width: 6px !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 1px solid #ddd !important;
+  border-bottom: 1px solid #ddd !important;
   transition: 0.1s !important;
   position: relative;
 
@@ -73,13 +71,13 @@ const StyledReflexSplitter = styled(ReflexSplitter)`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.palette.primary.main} !important;
-    transform: scaleX(1.1) !important;
+    background-color: ${({ theme }) => theme.palette.grey[400]} !important;
+    transform: scaleX(1.2) !important;
     border: 0 !important;
 
     &::before,
     &::after {
-      background-color: ${({ theme }) => theme.palette.background.paper};
+      background-color: ${({ theme }) => theme.palette.grey[700]};
     }
   }
 `;

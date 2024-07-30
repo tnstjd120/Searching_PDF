@@ -11,7 +11,7 @@ export const ChatCard = styled(Card)`
 
   .MuiCardHeader-root {
     border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
-    padding: 10px 12px;
+    padding: 4px 12px;
 
     .MuiTypography-root {
       font-size: 0.8rem;

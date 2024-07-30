@@ -2,12 +2,11 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/page-navigation/lib/styles/index.css';
 
 import { SpecialZoomLevel, Viewer, Worker } from '@react-pdf-viewer/core';
-import { CardHeader, IconButton, Stack, Typography } from '@mui/material';
-import CircularProgressWithLabel from '@/components/common/Progress/CircularProgressWithLabel';
-import * as S from './SearchPdfViewer.styled';
-import PdfFile from '@/assets/test_pdf.pdf';
+import { CardHeader, Typography } from '@mui/material';
 import { pageNavigationPlugin } from '@react-pdf-viewer/page-navigation';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import CircularProgressWithLabel from '@/components/common/Progress/CircularProgressWithLabel';
+import PdfFile from '@/assets/test_pdf.pdf';
+import * as S from './SearchPdfViewer.styled';
 
 const SearchPdfViewer = () => {
   const pageNavigationPluginInstance = pageNavigationPlugin();
