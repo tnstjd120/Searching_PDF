@@ -1,6 +1,6 @@
-import Chat from '@/components/Chat/Chat';
-import SearchPdfViewer from '@/components/searchPdf/SearchPdfViewer/SearchPdfViewer';
-import SearchResult from '@/components/searchPdf/SearchResult/SearchResult';
+import Chat from '@/service/Chat/Chat';
+import SearchPdfViewer from '@/service/searchPdf/SearchPdfViewer/SearchPdfViewer';
+import SearchResult from '@/service/searchPdf/SearchResult/SearchResult';
 import { Box, styled } from '@mui/material';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 
