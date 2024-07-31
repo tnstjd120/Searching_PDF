@@ -1,7 +1,10 @@
 import Home from '@/pages/Home';
+import Login from '@/pages/Login';
+import Logout from '@/pages/Logout';
 import Manual from '@/pages/Manual';
 import SearchPdf from '@/pages/SearchPdf';
 import { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom';
+import AuthRoute from './AuthRoute';
 
 interface AddRouteObject {
   name?: string;
@@ -17,20 +20,44 @@ const routeChildren: ExtendedRouteObject[] = [
   {
     index: true,
     isInNav: true,
-    Component: Home,
     name: 'Home',
+    element: (
+      <AuthRoute>
+        <Home />
+      </AuthRoute>
+    ),
   },
   {
     isInNav: true,
     path: 'search/pdf',
-    Component: SearchPdf,
     name: 'Search in PDF',
+    element: (
+      <AuthRoute>
+        <SearchPdf />
+      </AuthRoute>
+    ),
   },
   {
     isInNav: true,
     path: 'manual',
-    Component: Manual,
     name: 'Manual',
+    element: (
+      <AuthRoute>
+        <Manual />
+      </AuthRoute>
+    ),
+  },
+  {
+    isInNav: true,
+    path: 'login',
+    name: 'Login',
+    element: <Login />,
+  },
+  {
+    isInNav: true,
+    path: 'logout',
+    name: 'Logout',
+    element: <Logout />,
   },
 ];
 
