@@ -6,10 +6,7 @@ const Login = () => {
     <StyledLogin>
       <LoginBox>
         <LoginBox.Header />
-
         <LoginBox.Content />
-
-        <LoginBox.Footer />
       </LoginBox>
     </StyledLogin>
   );
