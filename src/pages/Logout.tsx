@@ -1,8 +1,15 @@
-import { redirect } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
+  const navigate = useNavigate();
   sessionStorage.clear();
-  return <>{redirect('/login')}</>;
+
+  useEffect(() => {
+    navigate('/login', { replace: true });
+  });
+
+  return <></>;
 };
 
 export default Logout;
