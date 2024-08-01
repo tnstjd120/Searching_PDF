@@ -23,6 +23,8 @@ export const StyledMessageInner = styled(Stack, { shouldForwardProp: (props) => 
   padding: 8px 12px;
   position: relative;
   word-break: break-word;
+  white-space: pre-wrap;
+  unicode-bidi: isolate;
 
   ${({ isMe }) => !isMe && `margin-left: 4px;`}
 
