@@ -1,10 +1,15 @@
 import { Box, styled } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '@/assets/images/logo.svg';
 import { checkAuth } from '@/auth/checkAuth';
 import routeChildren from '@/routes/routeChildren';
+import { useEffect } from 'react';
 
 const Header = () => {
+  const pathname = useLocation().pathname;
+
+  useEffect(() => {}, [pathname]);
+
   return (
     <StyledHeader>
       <StyledLogo>
