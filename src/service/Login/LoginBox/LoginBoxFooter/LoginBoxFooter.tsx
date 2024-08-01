@@ -1,7 +1,11 @@
 import * as S from './LoginBoxFooter.styled';
 
-const LoginBoxFooter = () => {
-  return <S.StyledLoginBoxFooter></S.StyledLoginBoxFooter>;
+interface ILoginBoxFooter {
+  children: React.ReactNode;
+}
+
+const LoginBoxFooter = ({ children }: ILoginBoxFooter) => {
+  return <S.StyledLoginBoxFooter>{children}</S.StyledLoginBoxFooter>;
 };
 
 export default LoginBoxFooter;

@@ -1,9 +1,10 @@
-import { Box, Button, Input, styled } from '@mui/material';
+import { Box, Button, Stack, Typography, styled } from '@mui/material';
 
-export const StyledLoginBoxContent = styled(Box)`
+export const LoginBoxContent = styled(Box)`
   width: 100%;
   border: 1px solid #ddd;
-  padding: 60px 40px;
+  padding: 80px 40px;
+  position: relative;
 
   a {
     color: ${({ theme }) => theme.palette.grey[600]};
@@ -15,22 +16,34 @@ export const StyledLoginBoxContent = styled(Box)`
   }
 `;
 
-export const StyledLoginInput = styled(Input)`
-  font-size: 0.9rem;
+export const LoginInputGroup = styled(Stack)`
+  position: relative;
+
+  input {
+    font-size: 0.9rem;
+  }
 
   &:not(:first-of-type) {
-    margin-top: 30px;
+    margin-top: 50px;
   }
 `;
 
-export const StyledLoginButton = styled(Button)`
-  border-radius: 0;
-  margin-top: 50px;
+export const HelperText = styled(Typography)`
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
 `;
 
-export const StyledLoginBottomMenu = styled(Box)`
+export const LoginButton = styled(Button)`
+  border-radius: 0;
+  margin-top: 70px;
+`;
+
+export const LoginBottomMenu = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   margin-top: 10px;
 `;

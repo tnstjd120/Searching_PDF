@@ -1,5 +1,12 @@
-import { Box, styled } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 
 export const StyledLoginBoxFooter = styled(Box)`
-  width: max(100%, 500px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+`;
+
+export const RootHelperText = styled(Typography)`
+  text-align: center;
 `;
