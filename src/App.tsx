@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/router';
 import theme from './styles/theme';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   const queryClient = new QueryClient({
@@ -18,8 +19,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
+        <SnackbarProvider maxSnack={3} autoHideDuration={1000}>
+          <CssBaseline />
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

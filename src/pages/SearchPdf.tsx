@@ -1,17 +1,22 @@
-import Chat from '@/components/Chat/Chat';
-import SearchPdfViewer from '@/components/searchPdf/SearchPdfViewer/SearchPdfViewer';
-import SearchResult from '@/components/searchPdf/SearchResult/SearchResult';
-import { Box, styled } from '@mui/material';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
+import { useActiveEngine } from '@/store/useChatStore';
+import { Box, styled } from '@mui/material';
+import useChangeEngineAnimation from '@/hooks/useChangeEngineAnimation';
+import SearchPdfViewer from '@/service/searchPdf/SearchPdfViewer/SearchPdfViewer';
+import SearchResult from '@/service/searchPdf/SearchResult';
+import Chat from '@/service/Chat/components/Chat';
 
 import 'react-reflex/styles.css';
 
 const SearchPdf = () => {
-  return (
-    <StyledSearchPdf>
-      <Chat />
+  const activeEngine = useActiveEngine();
+  const { scope, chatRef, rightAreaRef } = useChangeEngineAnimation(activeEngine);
 
-      <RightArea>
+  return (
+    <StyledSearchPdf ref={scope}>
+      <Chat ref={chatRef} />
+
+      <RightArea ref={rightAreaRef}>
         <ReflexContainer orientation="vertical">
           <ReflexElement flex={0.5}>
             <SearchResult />
@@ -31,13 +36,8 @@ const SearchPdf = () => {
 export default SearchPdf;
 
 const RightArea = styled(Box)`
-  width: 100%;
+  width: calc(100% - 500px);
   height: 100%;
-
-  .reflex-element {
-    padding: 1px;
-    /* padding: 10px; */
-  }
 `;
 
 const StyledSearchPdf = styled(Box)`
@@ -45,14 +45,16 @@ const StyledSearchPdf = styled(Box)`
   width: 100%;
   height: 100%;
   gap: 30px;
+  overflow: hidden;
+  padding: 20px;
 `;
 
 const StyledReflexSplitter = styled(ReflexSplitter)`
-  width: 8px !important;
-  height: calc(100% - 4px) !important;
-  border-radius: 2px;
-  border: 0 !important;
-  margin-top: 2px;
+  width: 6px !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 1px solid #ddd !important;
+  border-bottom: 1px solid #ddd !important;
   transition: 0.1s !important;
   position: relative;
 
@@ -73,13 +75,13 @@ const StyledReflexSplitter = styled(ReflexSplitter)`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.palette.primary.main} !important;
-    transform: scaleX(1.1) !important;
+    background-color: ${({ theme }) => theme.palette.grey[400]} !important;
+    transform: scaleX(1.2) !important;
     border: 0 !important;
 
     &::before,
     &::after {
-      background-color: ${({ theme }) => theme.palette.background.paper};
+      background-color: ${({ theme }) => theme.palette.grey[700]};
     }
   }
 `;
