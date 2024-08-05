@@ -1,4 +1,4 @@
-export type TSender = 'limeEngineQt' | 'answerEngineQt' | 'gptEngine';
+export type TEngineId = 'limeEngineQt' | 'answerEngineQt' | 'gptEngine';
 
 // ======================== Quantum Engine ======================== //
 export type TQuantumAnswerRank = {
@@ -16,7 +16,7 @@ export interface IQuantumQuestion {
 export interface IQuantumAnswer {
   message: string[];
   rank: TQuantumAnswerRank[];
-  sender: TSender;
+  engineId: TEngineId;
   createdAt: string;
 }
 
@@ -26,12 +26,6 @@ export interface IQuantumEngineChat {
 }
 
 // ======================== ChatGPT Engine ======================== //
-export type TGptAnswerRank = {
-  text: string;
-  pdfPath?: string;
-  page?: number;
-  prob: number;
-};
 
 export interface IGptQuestion {
   message: string;
@@ -40,8 +34,7 @@ export interface IGptQuestion {
 
 export interface IGptAnswer {
   message: string[];
-  rank: TGptAnswerRank[];
-  sender: TSender;
+  engineId: TEngineId;
   createdAt: string;
 }
 

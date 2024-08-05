@@ -1,11 +1,9 @@
-import dayjs from 'dayjs';
-import Message from '../Message/Message';
-import * as S from './MessageList.styled';
 import { Fragment } from 'react/jsx-runtime';
-import { useEffect } from 'react';
-import { api } from '@/api/axios';
-import { API_PATH } from '@/api/API_PATH';
-import axios from 'axios';
+import useGetChatMessages from '../../hooks/useGetChatMessages';
+import * as S from './MessageList.styled';
+import Message from '../Message/Message';
+import ProfileImage from '../ProfileImage/ProfileImage';
+import CircularProgressWithBlur from '@/components/common/Progress/CircularProgressWithBlur';
 
 const dummyList = [
   {
@@ -41,41 +39,33 @@ const dummyList = [
 ];
 
 const MessageList = () => {
-  const getChatMessages = async () => {
-    try {
-      const response = await api.get(API_PATH.CHAT_QT);
-
-      console.log('response: ', response);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error.response?.data.message;
-        throw new Error(`getChatMessages Error - ${error}`);
-      } else {
-      }
-    }
-  };
-
-  useEffect(() => {
-    getChatMessages();
-  }, []);
+  const { chatMessages, isLoading } = useGetChatMessages();
 
   return (
     <S.StyledMessageList>
-      {dummyList.map((item, i) => {
+      {chatMessages.map((item, i) => {
         const questionMessage = (
           <Message
             key={`question-${i}`}
             message={item.question.message}
-            time={dayjs(item.question.createdAt).format('HH:mm')}
+            time={item.question.createdAt.split('T')[1]}
             isMe
           />
         );
+
         const answerMessages = item.answer.message.map((answerMessage, answerMessageIndex) => {
           const answerMessageTime =
-            item.answer.message.length === answerMessageIndex + 1
-              ? dayjs(item.answer.createdAt).format('HH:mm')
-              : undefined;
-          return <Message key={`answer-${answerMessageIndex}`} message={answerMessage} time={answerMessageTime} />;
+            item.answer.message.length === answerMessageIndex + 1 ? item.answer.createdAt.split('T')[1] : undefined;
+          return (
+            <Message
+              key={`answer-${answerMessageIndex}`}
+              renderProfile={answerMessageIndex === 0 && <ProfileImage />}
+              variant={answerMessageIndex > 0 ? 'radius' : undefined}
+              message={answerMessage}
+              time={answerMessageTime}
+              mt={answerMessageIndex > 0 ? '8px' : undefined}
+            />
+          );
         });
 
         return (
@@ -85,6 +75,8 @@ const MessageList = () => {
           </Fragment>
         );
       })}
+
+      {isLoading && <CircularProgressWithBlur scope="global" />}
     </S.StyledMessageList>
   );
 };

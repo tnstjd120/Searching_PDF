@@ -1,4 +1,4 @@
-import { Box, Card, styled } from '@mui/material';
+import { Box, Card, Typography, styled } from '@mui/material';
 
 export const SearchPdfCard = styled(Card)`
   /* background-color: ${({ theme }) => theme.palette.greyBlue[100]}; */
@@ -22,6 +22,10 @@ export const SearchPdfCard = styled(Card)`
     svg {
       font-size: 1rem;
     }
+  }
+
+  .rpv-core__doc-error-text {
+    word-wrap: break-word;
   }
 `;
 
@@ -61,5 +65,13 @@ export const PaginationLayout = styled(Box)`
 
 export const ButtonLayout = styled(Box)`
   display: flex;
+  align-items: center;
+`;
+
+export const CenterBox = styled(Typography)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
   align-items: center;
 `;

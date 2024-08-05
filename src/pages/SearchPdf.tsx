@@ -1,17 +1,22 @@
-import Chat from '@/service/Chat/Chat';
-import SearchPdfViewer from '@/service/searchPdf/SearchPdfViewer/SearchPdfViewer';
-import SearchResult from '@/service/searchPdf/SearchResult/SearchResult';
-import { Box, styled } from '@mui/material';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
+import { useActiveEngine } from '@/store/useChatStore';
+import { Box, styled } from '@mui/material';
+import useChangeEngineAnimation from '@/hooks/useChangeEngineAnimation';
+import SearchPdfViewer from '@/service/searchPdf/SearchPdfViewer/SearchPdfViewer';
+import SearchResult from '@/service/searchPdf/SearchResult';
+import Chat from '@/service/Chat/components/Chat';
 
 import 'react-reflex/styles.css';
 
 const SearchPdf = () => {
-  return (
-    <StyledSearchPdf>
-      <Chat />
+  const activeEngine = useActiveEngine();
+  const { scope, chatRef, rightAreaRef } = useChangeEngineAnimation(activeEngine);
 
-      <RightArea>
+  return (
+    <StyledSearchPdf ref={scope}>
+      <Chat ref={chatRef} />
+
+      <RightArea ref={rightAreaRef}>
         <ReflexContainer orientation="vertical">
           <ReflexElement flex={0.5}>
             <SearchResult />
@@ -31,11 +36,8 @@ const SearchPdf = () => {
 export default SearchPdf;
 
 const RightArea = styled(Box)`
-  width: 100%;
+  width: calc(100% - 500px);
   height: 100%;
-
-  .reflex-element {
-  }
 `;
 
 const StyledSearchPdf = styled(Box)`
@@ -43,6 +45,8 @@ const StyledSearchPdf = styled(Box)`
   width: 100%;
   height: 100%;
   gap: 30px;
+  overflow: hidden;
+  padding: 20px;
 `;
 
 const StyledReflexSplitter = styled(ReflexSplitter)`

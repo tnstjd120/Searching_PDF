@@ -6,8 +6,9 @@ export const ChatCard = styled(Card)`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   height: 100%;
+  position: relative;
 
   .MuiCardHeader-root {
     border-bottom: 1px solid ${({ theme }) => theme.palette.divider};

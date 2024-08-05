@@ -1,32 +1,42 @@
 import { IUserTokenParsing } from '@/types/User';
+import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export interface IUseUserState extends Omit<IUserTokenParsing, 'iat' | 'exp'> {}
+interface IState extends Omit<IUserTokenParsing, 'iat' | 'exp'> {}
 
-export interface IUseUserAction {
-  updateUser: (userInfo: IUseUserState) => void;
+interface IAction {
+  loginUser: (token: string) => void;
 }
 
-interface IUseUserStore {
-  state: IUseUserState;
-  action: IUseUserAction;
+interface IStore extends IAction {
+  state: IState;
 }
+
+const initialState: IState = {
+  id: 0,
+  userId: '',
+  userName: '',
+  userRole: 'Basic',
+};
 
 const useUserStore = create(
-  persist<IUseUserStore>(
+  persist<IStore>(
     (set) => ({
-      state: {
-        userId: '',
-        userName: '',
-        userRole: 'Basic',
-      },
-      action: {
-        updateUser: (userInfo: IUseUserState) => set((prev) => ({ ...prev, ...userInfo })),
-      },
+      state: { ...initialState },
+
+      loginUser: (token: string) =>
+        set(() => {
+          sessionStorage.setItem('token', token);
+          const { id, userId, userName, userRole } = jwtDecode<Omit<IUserTokenParsing, 'iat' | 'exp'>>(token);
+          console.log(jwtDecode<Omit<IUserTokenParsing, 'iat' | 'exp'>>(token));
+          return { state: { id, userId, userName, userRole } };
+        }),
     }),
     { name: 'useUserStore', getStorage: () => sessionStorage },
   ),
 );
 
-export default useUserStore;
+export const useUserInfo = () => useUserStore((state) => state.state);
+
+export const useSetUserInfo = () => useUserStore((state) => state.loginUser);

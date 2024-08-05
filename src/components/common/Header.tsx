@@ -54,6 +54,7 @@ const StyledHeader = styled(Box)`
   background-color: ${({ theme }) => theme.palette.background.paper};
   /* border-bottom: 1px solid ${({ theme }) => theme.palette.divider}; */
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.1);
+  z-index: 3;
 `;
 
 const StyledLogo = styled(Box)`
