@@ -17,9 +17,10 @@ export const getChatMessages = async (
     if (axios.isAxiosError(error)) {
       const message = error.response?.data.message;
       enqueueSnackbar(message || '문제가 발생했습니다.', { variant: 'error' });
-      throw new Error(`getChatMessages Error - ${error}`);
     } else {
       enqueueSnackbar('문제가 발생했습니다.', { variant: 'error' });
     }
+
+    throw new Error(`getChatMessages Error - ${error}`);
   }
 };
