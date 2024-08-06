@@ -1,7 +1,11 @@
+import { EngineType } from '@/types/Engine';
 import { Card, Switch, styled } from '@mui/material';
 
-export const ChatCard = styled(Card)`
-  background-color: ${({ theme }) => theme.palette.greyBlue[100]};
+export const ChatCard = styled(Card, { shouldForwardProp: (props) => props !== 'activeEngine' })<{
+  activeEngine: EngineType;
+}>`
+  background-color: ${({ theme, activeEngine }) =>
+    activeEngine === EngineType.Quantum ? theme.palette.greyBlue[100] : theme.palette.grey[100]};
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;

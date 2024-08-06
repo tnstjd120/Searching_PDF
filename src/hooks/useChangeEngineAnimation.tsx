@@ -10,9 +10,10 @@ const useChangeEngineAnimation = (engineType: EngineType) => {
   const isQuantum = engineType === EngineType.Quantum;
 
   useEffect(() => {
-    animate(rightAreaRef.current, isQuantum ? { x: 0, opacity: 1 } : { x: 2000, opacity: 0 }, {
+    animate(rightAreaRef.current, isQuantum ? { x: 0, opacity: 1 } : { x: '100vw', opacity: 0 }, {
       type: 'spring',
       duration: 1,
+      delay: 0.07,
     });
 
     animate(chatRef.current, isQuantum ? { x: '0', left: '0' } : { x: '-50%', left: '50%' }, {

@@ -1,4 +1,8 @@
-export type TEngineId = 'limeEngineQt' | 'answerEngineQt' | 'gptEngine';
+export type TEngine = 'limeEngineQt' | 'answerEngineQt' | 'gptEngine';
+export type TMessage = {
+  type: 'text' | 'image';
+  value: string;
+};
 
 // ======================== Quantum Engine ======================== //
 export type TQuantumAnswerRank = {
@@ -14,15 +18,15 @@ export interface IQuantumQuestion {
 }
 
 export interface IQuantumAnswer {
-  message: string[];
+  message: TMessage[];
   rank: TQuantumAnswerRank[];
-  engineId: TEngineId;
+  engineId: TEngine;
   createdAt: string;
 }
 
 export interface IQuantumEngineChat {
   question: IQuantumQuestion;
-  answer: IQuantumAnswer;
+  answer: IQuantumAnswer | null;
 }
 
 // ======================== ChatGPT Engine ======================== //
@@ -33,12 +37,12 @@ export interface IGptQuestion {
 }
 
 export interface IGptAnswer {
-  message: string[];
-  engineId: TEngineId;
+  message: TMessage[];
+  engineId: TEngine;
   createdAt: string;
 }
 
 export interface IGptEngineChat {
   question: IGptQuestion;
-  answer: IGptAnswer;
+  answer: IGptAnswer | null;
 }

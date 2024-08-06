@@ -1,10 +1,21 @@
 import { Box, styled } from '@mui/material';
 
-export const StyledChatForm = styled(Box)`
+export const StyledChatForm = styled('form')`
   border-top: 1px solid ${({ theme }) => theme.palette.divider};
   width: 100%;
-  flex-basis: 100px;
+  height: 40px;
   position: relative;
+  transition: height 0.15s ease-in-out;
+
+  &:has(textarea:focus) {
+    height: 120px;
+
+    /* background-color: ${({ theme }) => theme.palette.greyBlue[200]};
+
+      & + button svg {
+        color: ${({ theme }) => theme.palette.greyBlue[500]};
+      } */
+  }
 
   > textarea {
     background-color: ${({ theme }) => theme.palette.grey[50]};
@@ -16,14 +27,9 @@ export const StyledChatForm = styled(Box)`
     border: 0;
     outline: none;
     resize: none;
-    transition: background 0.1s ease-in;
 
-    &:focus {
-      background-color: ${({ theme }) => theme.palette.greyBlue[200]};
-
-      & + button svg {
-        color: ${({ theme }) => theme.palette.primary.light};
-      }
+    &::placeholder {
+      color: ${({ theme }) => theme.palette.grey[400]};
     }
   }
 
@@ -34,9 +40,13 @@ export const StyledChatForm = styled(Box)`
     transform: translateY(-50%);
 
     svg {
-      color: ${({ theme }) => theme.palette.divider};
+      color: ${({ theme }) => theme.palette.primary.main};
+    }
 
-      /* outline: 1px solid ${({ theme }) => theme.palette.primary.light}; */
+    &:disabled {
+      svg {
+        color: ${({ theme }) => theme.palette.divider};
+      }
     }
   }
 `;
