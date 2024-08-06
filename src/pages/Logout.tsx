@@ -1,11 +1,15 @@
+import { useInitializeChatStore } from '@/store/useChatStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
+  const initializeChatStore = useInitializeChatStore();
   const navigate = useNavigate();
-  sessionStorage.clear();
 
   useEffect(() => {
+    initializeChatStore();
+    sessionStorage.clear();
+
     navigate('/login', { replace: true });
   });
 
