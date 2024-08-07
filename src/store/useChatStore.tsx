@@ -34,6 +34,14 @@ const isQuantumAnswer = (message: IQuantumEngineChat | IGptEngineChat): message 
   return !!(message?.answer as IQuantumAnswer)?.rank;
 };
 
+const updateChatState = (messages: IQuantumEngineChat[] | IGptEngineChat[]) => {
+  const lastMessage = messages[messages.length - 1];
+  const chatRanks = isQuantumAnswer(lastMessage) ? lastMessage.answer?.rank || null : null;
+  const activeChatRank =
+    isQuantumAnswer(lastMessage) && lastMessage.answer ? { ...lastMessage.answer.rank[0], index: 0 } : null;
+  return { messages, chatRanks, activeChatRank };
+};
+
 const useChatStore = create(
   persist<IState & IAction>(
     (set) => ({
@@ -44,12 +52,12 @@ const useChatStore = create(
       },
       setChatMessages: (messages: IQuantumEngineChat[] | IGptEngineChat[]) => {
         set((state) => {
-          const lastMessage = messages[messages.length - 1];
+          const { messages: updatedMessages, chatRanks, activeChatRank } = updateChatState(messages);
+
           return {
-            [state.activeEngine]: messages,
-            chatRanks: isQuantumAnswer(lastMessage) ? lastMessage.answer?.rank || null : null,
-            activeChatRank:
-              isQuantumAnswer(lastMessage) && lastMessage.answer ? { ...lastMessage.answer?.rank[0], index: 0 } : null,
+            [state.activeEngine]: updatedMessages,
+            chatRanks: chatRanks,
+            activeChatRank: activeChatRank,
           };
         });
       },
@@ -61,12 +69,52 @@ const useChatStore = create(
           const activeEngine = state.activeEngine;
 
           if (appendType === 'question') {
-            return { [activeEngine]: { ...state[activeEngine], message } };
+            return { [activeEngine]: [...state[activeEngine], message] };
           } else {
             const chatMessages = [...state[activeEngine]];
             const lastMessage = chatMessages.pop();
-            const updateMessage = { ...lastMessage, answer: message };
-            return { [activeEngine]: { ...chatMessages, updateMessage } };
+
+            if (lastMessage && message.answer) {
+              let updatedAnswerMessage;
+
+              if ('rank' in message.answer) {
+                updatedAnswerMessage = {
+                  ...message.answer,
+                  message: message.answer.message.map((msg) => (msg.type === 'text' ? { ...msg, typing: true } : msg)),
+                };
+              } else {
+                updatedAnswerMessage = {
+                  ...message.answer,
+                  message: message.answer.message.map((msg) => (msg.type === 'text' ? { ...msg, typing: true } : msg)),
+                };
+              }
+
+              const updatedMessage = { ...lastMessage, answer: updatedAnswerMessage };
+              const messages = [...chatMessages, updatedMessage];
+
+              if (messages.length > 0) {
+                const secondLastMessage = messages[messages.length - 2];
+                if (secondLastMessage.answer && secondLastMessage.answer.message) {
+                  const updatedSecondLastAnswerMessage = secondLastMessage.answer.message.map((msg) => {
+                    const { typing, ...rest } = msg;
+                    return rest;
+                  });
+                  messages[messages.length - 2] = {
+                    ...secondLastMessage,
+                    answer: { ...secondLastMessage.answer, message: updatedSecondLastAnswerMessage },
+                  };
+                }
+              }
+
+              const { messages: updatedMessages, chatRanks, activeChatRank } = updateChatState(messages);
+              return {
+                [activeEngine]: updatedMessages,
+                chatRanks: chatRanks,
+                activeChatRank: activeChatRank,
+              };
+            }
+
+            return state;
           }
         });
       },
