@@ -88,6 +88,7 @@ export const StyledMessageInner = styled(Stack, {
           position: absolute;
           bottom: 0;
           font-size: 10px;
+          min-width: 48px;
           color: ${theme.palette.grey[500]};
           ${
             isMe
