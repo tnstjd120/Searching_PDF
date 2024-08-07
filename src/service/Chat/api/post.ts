@@ -12,7 +12,7 @@ export const postChatMessage = async (
   try {
     const chatPath = engineType === EngineType.Quantum ? API_PATH.CHAT_QT : API_PATH.CHAT_QT;
     const response = await api.post(chatPath, { question: question });
-    return response.data.result;
+    return response.data.result.answer;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error?.response?.data.message;
