@@ -1,3 +1,4 @@
+import { EngineType } from '@/types/Engine';
 import { Box, ListItem, Stack, styled } from '@mui/material';
 
 export const StyledMessage = styled(ListItem, { shouldForwardProp: (props) => props !== 'isMe' })<{ isMe: boolean }>`
@@ -24,11 +25,12 @@ export const ProfileArea = styled(Box)`
 `;
 
 export const StyledMessageInner = styled(Stack, {
-  shouldForwardProp: (props) => props !== 'isMe' && props !== 'time' && props !== 'varinat',
+  shouldForwardProp: (props) => props !== 'isMe' && props !== 'time' && props !== 'varinat' && props !== 'activeEngine',
 })<{
   isMe: boolean;
   time: string;
   variant: 'speechBubble' | 'radius';
+  activeEngine: EngineType;
 }>`
   max-width: calc(100% - 100px);
   border-radius: 8px;
@@ -42,12 +44,12 @@ export const StyledMessageInner = styled(Stack, {
   background-color: ${({ theme }) => theme.palette.background.paper};
   border-color: ${({ theme }) => theme.palette.background.paper};
 
-  ${({ theme, isMe }) =>
+  ${({ theme, isMe, activeEngine }) =>
     isMe &&
     `
     margin-right: 8px;
-    background-color: ${theme.palette.greyBlue[300]};
-    border-color: ${theme.palette.greyBlue[300]};
+    background-color: ${activeEngine === EngineType.Quantum ? theme.palette.greyBlue[300] : theme.palette.grey[400]};
+    border-color: ${activeEngine === EngineType.Quantum ? theme.palette.greyBlue[300] : theme.palette.grey[400]};
 
   `}
 
@@ -86,6 +88,7 @@ export const StyledMessageInner = styled(Stack, {
           position: absolute;
           bottom: 0;
           font-size: 10px;
+          min-width: 48px;
           color: ${theme.palette.grey[500]};
           ${
             isMe

@@ -17,8 +17,6 @@ const SearchPdfViewer = () => {
   const activeChatRank = useActiveChatRank();
 
   useEffect(() => {
-    console.log('activeChatRank: ', activeChatRank);
-
     if (activeChatRank?.page) jumpToPage(activeChatRank?.page);
   }, [activeChatRank]);
 
@@ -54,7 +52,7 @@ const SearchPdfViewer = () => {
           <Viewer
             fileUrl={`${import.meta.env.VITE_APP_BASE_STORAGE_URL}${activeChatRank.pdfPath}`}
             renderLoader={(percentages: number) => <CircularProgressWithLabel value={percentages} />}
-            defaultScale={SpecialZoomLevel.ActualSize}
+            defaultScale={SpecialZoomLevel.PageWidth}
             plugins={[pageNavigationPluginInstance]}
             initialPage={activeChatRank?.page}
           />
