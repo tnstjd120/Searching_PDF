@@ -2,6 +2,8 @@ import { formatTimeWithPeriod } from '@/utils/formatDate';
 import * as S from './Message.styled';
 import { useActiveEngine } from '@/store/useChatStore';
 import { TMessage } from '@/types/Chat';
+import Typewriter from 'typewriter-effect';
+import { useEffect, useRef } from 'react';
 
 interface IMessage {
   renderProfile?: React.ReactNode;
@@ -16,8 +18,37 @@ const Message = ({ renderProfile, variant = 'speechBubble', message, isMe, time,
   const activeEngine = useActiveEngine();
   const timeFormat = time ? formatTimeWithPeriod(time) : '';
 
+  const messageEndRef = useRef<HTMLDivElement>(null);
+  const messageContainerRef = useRef<HTMLLIElement>(null);
+
+  const scrollToBottom = () => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView();
+    }
+  };
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      scrollToBottom();
+    });
+
+    if (messageContainerRef.current) {
+      observer.observe(messageContainerRef.current);
+    }
+
+    return () => {
+      if (messageContainerRef.current) {
+        observer.unobserve(messageContainerRef.current);
+      }
+    };
+  }, [messageContainerRef]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [message]);
+
   return (
-    <S.StyledMessage isMe={Boolean(isMe)} sx={{ mt: `${mt} !important` }}>
+    <S.StyledMessage ref={messageContainerRef} isMe={Boolean(isMe)} sx={{ mt: `${mt} !important` }}>
       <S.ProfileArea>{renderProfile && renderProfile}</S.ProfileArea>
 
       <S.StyledMessageInner isMe={Boolean(isMe)} activeEngine={activeEngine} time={timeFormat} variant={variant}>
@@ -25,10 +56,26 @@ const Message = ({ renderProfile, variant = 'speechBubble', message, isMe, time,
           message
         ) : message.type === 'image' ? (
           <img src={`${import.meta.env.VITE_APP_BASE_STORAGE_URL}${message.value}`} />
+        ) : message.typing ? (
+          <Typewriter
+            onInit={(typewriter) => {
+              typewriter
+                .typeString(message.value)
+                .callFunction(() => {
+                  console.log('타이핑 끝');
+                })
+                .start();
+            }}
+            options={{
+              delay: 10,
+            }}
+          />
         ) : (
           message.value
         )}
       </S.StyledMessageInner>
+
+      <div ref={messageEndRef} />
     </S.StyledMessage>
   );
 };
