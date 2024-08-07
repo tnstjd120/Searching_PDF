@@ -1,10 +1,11 @@
-import { Box, styled } from '@mui/material';
+import { styled } from '@mui/material';
 
 export const StyledChatForm = styled('form')`
   border-top: 1px solid ${({ theme }) => theme.palette.divider};
   width: 100%;
   height: 40px;
   position: relative;
+  overflow: hidden;
   transition: height 0.15s ease-in-out;
 
   &:has(textarea:focus) {
