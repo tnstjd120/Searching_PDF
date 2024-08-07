@@ -2,6 +2,7 @@ export type TEngine = 'limeEngineQt' | 'answerEngineQt' | 'gptEngine';
 export type TMessage = {
   type: 'text' | 'image';
   value: string;
+  typing?: boolean;
 };
 
 // ======================== Quantum Engine ======================== //
