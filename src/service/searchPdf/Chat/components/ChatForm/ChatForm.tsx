@@ -26,9 +26,7 @@ const ChatForm = () => {
 
   const handleSend = async () => {
     if (sendMessage) {
-      console.log('sended');
       const offsetDate = new Date().getTimezoneOffset() * 60000;
-
       const newQuestion = {
         message: sendMessage,
         createdAt: new Date(Date.now() - offsetDate).toISOString(),
