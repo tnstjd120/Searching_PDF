@@ -1,28 +1,41 @@
 import { formatTimeWithPeriod } from '@/utils/formatDate';
 import * as S from './Message.styled';
-import { useActiveEngine } from '@/store/useChatStore';
+import { useActiveEngine, useSetIsTyping } from '@/store/useChatStore';
 import { TMessage } from '@/types/Chat';
 import Typewriter from 'typewriter-effect';
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
+import { FeedbackOutlined } from '@mui/icons-material';
 
 interface IMessage {
   renderProfile?: React.ReactNode;
   variant?: 'speechBubble' | 'radius';
   message: TMessage | string;
+  engineLogId?: number | false;
   isMe?: boolean;
   time?: string;
   mt?: string;
+  messageEndRef?: RefObject<HTMLDivElement>;
 }
 
-const Message = ({ renderProfile, variant = 'speechBubble', message, isMe, time, mt }: IMessage) => {
+const Message = ({
+  renderProfile,
+  variant = 'speechBubble',
+  message,
+  engineLogId,
+  isMe,
+  time,
+  mt,
+  messageEndRef,
+}: IMessage) => {
   const activeEngine = useActiveEngine();
+  const setIsTyping = useSetIsTyping();
+
   const timeFormat = time ? formatTimeWithPeriod(time) : '';
 
-  const messageEndRef = useRef<HTMLDivElement>(null);
   const messageContainerRef = useRef<HTMLLIElement>(null);
 
   const scrollToBottom = () => {
-    if (messageEndRef.current) {
+    if (messageEndRef && messageEndRef.current) {
       messageEndRef.current.scrollIntoView();
     }
   };
@@ -43,10 +56,6 @@ const Message = ({ renderProfile, variant = 'speechBubble', message, isMe, time,
     };
   }, [messageContainerRef]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [message]);
-
   return (
     <S.StyledMessage ref={messageContainerRef} isMe={Boolean(isMe)} sx={{ mt: `${mt} !important` }}>
       <S.ProfileArea>{renderProfile && renderProfile}</S.ProfileArea>
@@ -63,6 +72,7 @@ const Message = ({ renderProfile, variant = 'speechBubble', message, isMe, time,
                 .typeString(message.value)
                 .callFunction(() => {
                   console.log('타이핑 끝');
+                  setIsTyping(false);
                 })
                 .start();
             }}
@@ -75,7 +85,11 @@ const Message = ({ renderProfile, variant = 'speechBubble', message, isMe, time,
         )}
       </S.StyledMessageInner>
 
-      <div ref={messageEndRef} />
+      {!isMe && engineLogId && (
+        <S.FeedBackButton>
+          <FeedbackOutlined />
+        </S.FeedBackButton>
+      )}
     </S.StyledMessage>
   );
 };

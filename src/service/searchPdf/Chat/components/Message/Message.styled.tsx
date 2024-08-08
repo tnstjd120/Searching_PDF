@@ -1,5 +1,5 @@
 import { EngineType } from '@/types/Engine';
-import { Box, ListItem, Stack, styled } from '@mui/material';
+import { Box, IconButton, ListItem, Stack, styled } from '@mui/material';
 
 export const StyledMessage = styled(ListItem, { shouldForwardProp: (props) => props !== 'isMe' })<{ isMe: boolean }>`
   width: 100%;
@@ -103,4 +103,19 @@ export const StyledMessageInner = styled(Stack, {
           }
       }
     `}
+`;
+
+export const FeedBackButton = styled(IconButton)`
+  position: absolute;
+  right: 0;
+  top: -8px;
+  color: ${({ theme }) => theme.palette.divider};
+
+  & svg {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.palette.grey[500]};
+  }
 `;
