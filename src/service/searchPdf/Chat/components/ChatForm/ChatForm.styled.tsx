@@ -29,6 +29,10 @@ export const StyledChatForm = styled('form')`
     outline: none;
     resize: none;
 
+    &:disabled {
+      background-color: ${({ theme }) => theme.palette.grey[200]};
+    }
+
     &::placeholder {
       color: ${({ theme }) => theme.palette.grey[400]};
     }

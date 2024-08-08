@@ -2,12 +2,15 @@ import { SendSharp } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import * as S from './ChatForm.styled';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import { useAppendChatMessage } from '@/store/useChatStore';
+import { useAppendChatMessage, useIsTyping, useSetIsTyping } from '@/store/useChatStore';
 import usePostChatMessage from '../../hooks/usePostChatMessage';
 
 const ChatForm = () => {
   const postChatMessage = usePostChatMessage();
   const appendChatMessage = useAppendChatMessage();
+  const isTyping = useIsTyping();
+  const setIsTyping = useSetIsTyping();
+
   const [sendMessage, setSendMessage] = useState('');
 
   const handleChangeSendMessage = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,14 +31,18 @@ const ChatForm = () => {
     if (sendMessage) {
       const offsetDate = new Date().getTimezoneOffset() * 60000;
       const newQuestion = {
+        id: +new Date(),
         message: sendMessage,
         createdAt: new Date(Date.now() - offsetDate).toISOString(),
       };
 
       appendChatMessage({ question: newQuestion, answer: null }, 'question');
       setSendMessage('');
+      setIsTyping(true);
 
-      const answerResponse = await postChatMessage(newQuestion.message);
+      const answerResponse = await postChatMessage(newQuestion.message).catch(() => {
+        setIsTyping(false);
+      });
       if (answerResponse) appendChatMessage({ question: newQuestion, answer: answerResponse }, 'answer');
     }
   };
@@ -47,6 +54,7 @@ const ChatForm = () => {
         value={sendMessage}
         onChange={handleChangeSendMessage}
         onKeyDown={handleKeyUpWithEnter}
+        disabled={isTyping}
       />
 
       <IconButton className="send-button" onClick={handleSend} disabled={!sendMessage}>
