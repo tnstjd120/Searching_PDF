@@ -3,8 +3,10 @@ import * as S from './Message.styled';
 import { useActiveEngine, useSetIsTyping } from '@/store/useChatStore';
 import { TMessage } from '@/types/Chat';
 import Typewriter from 'typewriter-effect';
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { FeedbackOutlined } from '@mui/icons-material';
+import { postChatFeedback } from '../../api/post';
+import FeedbackDialog from '../FeedbackDialog/FeedbackDialog';
 
 interface IMessage {
   renderProfile?: React.ReactNode;
@@ -30,9 +32,19 @@ const Message = ({
   const activeEngine = useActiveEngine();
   const setIsTyping = useSetIsTyping();
 
+  const [openFeedback, setOpenFeedback] = useState(false);
+
   const timeFormat = time ? formatTimeWithPeriod(time) : '';
 
   const messageContainerRef = useRef<HTMLLIElement>(null);
+
+  const handleOpenFeedbackDialog = () => {
+    setOpenFeedback(true);
+  };
+
+  const handleCloseFeedbackDialog = () => {
+    setOpenFeedback(false);
+  };
 
   const scrollToBottom = () => {
     if (messageEndRef && messageEndRef.current) {
@@ -55,6 +67,11 @@ const Message = ({
       }
     };
   }, [messageContainerRef]);
+
+  const handleClickFeedback = async (engineLogId: number) => {
+    const responseFeedback = await postChatFeedback(engineLogId);
+    console.log('responseFeedback: ', responseFeedback);
+  };
 
   return (
     <S.StyledMessage ref={messageContainerRef} isMe={Boolean(isMe)} sx={{ mt: `${mt} !important` }}>
@@ -85,8 +102,10 @@ const Message = ({
         )}
       </S.StyledMessageInner>
 
+      <FeedbackDialog open={openFeedback} onClose={handleCloseFeedbackDialog} />
+
       {!isMe && engineLogId && (
-        <S.FeedBackButton>
+        <S.FeedBackButton onClick={handleOpenFeedbackDialog}>
           <FeedbackOutlined />
         </S.FeedBackButton>
       )}
