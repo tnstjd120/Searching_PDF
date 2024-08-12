@@ -12,6 +12,7 @@ interface IState {
   [EngineType.ChatGPT]: IGptEngineChat[];
   chatRanks: TQuantumAnswerRank[] | null;
   activeChatRank: TQuantumAnswerRankWithIndex | null;
+  isTyping: boolean;
 }
 
 interface IAction {
@@ -19,6 +20,7 @@ interface IAction {
   setChatMessages: (messages: IQuantumEngineChat[] | IGptEngineChat[]) => void;
   setActiveChatRank: (rank: TQuantumAnswerRankWithIndex | null) => void;
   appendChatMessage: (message: IQuantumEngineChat | IGptEngineChat, appendType: TAppend) => void;
+  setIsTyping: (typing: boolean) => void;
   initializeChatStore: () => void;
 }
 
@@ -28,6 +30,7 @@ const initialState = {
   [EngineType.ChatGPT]: [],
   chatRanks: null,
   activeChatRank: null,
+  isTyping: false,
 };
 
 const isQuantumAnswer = (message: IQuantumEngineChat | IGptEngineChat): message is IQuantumEngineChat => {
@@ -92,7 +95,7 @@ const useChatStore = create(
               const updatedMessage = { ...lastMessage, answer: updatedAnswerMessage };
               const messages = [...chatMessages, updatedMessage];
 
-              if (messages.length > 0) {
+              if (messages.length > 1) {
                 const secondLastMessage = messages[messages.length - 2];
                 if (secondLastMessage.answer && secondLastMessage.answer.message) {
                   const updatedSecondLastAnswerMessage = secondLastMessage.answer.message.map((msg) => {
@@ -118,6 +121,9 @@ const useChatStore = create(
           }
         });
       },
+      setIsTyping: (typing: boolean) => {
+        set({ isTyping: typing });
+      },
       initializeChatStore: () => {
         set({ ...initialState });
       },
@@ -131,9 +137,11 @@ export const useChatMessages = (engineType: EngineType) => useChatStore((state) 
 export const useChatRanks = () => useChatStore((state) => state.chatRanks);
 export const useActiveChatRank = () => useChatStore((state) => state.activeChatRank);
 export const useIsActive = (index: number) => useChatStore((state) => state.activeChatRank?.index === index);
+export const useIsTyping = () => useChatStore((state) => state.isTyping);
 
 export const useSetActiveEngine = () => useChatStore((state) => state.setActiveEngine);
 export const useSetChatMessages = () => useChatStore((state) => state.setChatMessages);
 export const useSetActiveChatRank = () => useChatStore((state) => state.setActiveChatRank);
 export const useAppendChatMessage = () => useChatStore((state) => state.appendChatMessage);
 export const useInitializeChatStore = () => useChatStore((state) => state.initializeChatStore);
+export const useSetIsTyping = () => useChatStore((state) => state.setIsTyping);

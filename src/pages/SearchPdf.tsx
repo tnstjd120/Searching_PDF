@@ -4,9 +4,9 @@ import { Box, styled } from '@mui/material';
 import useChangeEngineAnimation from '@/hooks/useChangeEngineAnimation';
 import SearchPdfViewer from '@/service/searchPdf/SearchPdfViewer/SearchPdfViewer';
 import SearchResult from '@/service/searchPdf/SearchResult';
-import Chat from '@/service/Chat/components/Chat';
 
 import 'react-reflex/styles.css';
+import Chat from '@/service/searchPdf/Chat/components/Chat';
 
 const SearchPdf = () => {
   const activeEngine = useActiveEngine();

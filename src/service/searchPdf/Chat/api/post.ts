@@ -10,7 +10,7 @@ export const postChatMessage = async (
   question: string,
 ): Promise<IQuantumAnswer | IGptAnswer | undefined> => {
   try {
-    const chatPath = engineType === EngineType.Quantum ? API_PATH.CHAT_QT : API_PATH.CHAT_QT;
+    const chatPath = engineType === EngineType.Quantum ? API_PATH.CHAT_QT : API_PATH.CHAT_GPT;
     const response = await api.post(chatPath, { question: question });
     return response.data.result.answer;
   } catch (error) {
@@ -22,5 +22,23 @@ export const postChatMessage = async (
     }
 
     throw new Error(`postChatMessage Error - ${error}`);
+  }
+};
+
+export const postChatFeedback = async (engineLogId: number) => {
+  if (engineLogId === 0) return;
+
+  try {
+    const response = await api.post(API_PATH.FEEDBACK, { engineLogId: engineLogId });
+    return response.data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error?.response?.data.message;
+      enqueueSnackbar(message || '문제가 발생했습니다.', { variant: 'error' });
+    } else {
+      enqueueSnackbar('문제가 발생했습니다.', { variant: 'error' });
+    }
+
+    throw new Error(`postChatFeedback Error - ${error}`);
   }
 };

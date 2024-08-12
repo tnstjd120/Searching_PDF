@@ -14,14 +14,16 @@ export type TQuantumAnswerRank = {
 };
 
 export interface IQuantumQuestion {
+  id: number;
   message: string;
   createdAt: string;
 }
 
 export interface IQuantumAnswer {
+  id: number;
   message: TMessage[];
   rank: TQuantumAnswerRank[];
-  engineId: TEngine;
+  engineType: TEngine;
   createdAt: string;
 }
 
@@ -33,13 +35,15 @@ export interface IQuantumEngineChat {
 // ======================== ChatGPT Engine ======================== //
 
 export interface IGptQuestion {
+  id: number;
   message: string;
   createdAt: string;
 }
 
 export interface IGptAnswer {
+  id: number;
   message: TMessage[];
-  engineId: TEngine;
+  engineType: TEngine;
   createdAt: string;
 }
 

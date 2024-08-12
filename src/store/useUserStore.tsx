@@ -29,7 +29,6 @@ const useUserStore = create(
         set(() => {
           sessionStorage.setItem('token', token);
           const { id, userId, userName, userRole } = jwtDecode<Omit<IUserTokenParsing, 'iat' | 'exp'>>(token);
-          console.log(jwtDecode<Omit<IUserTokenParsing, 'iat' | 'exp'>>(token));
           return { state: { id, userId, userName, userRole } };
         }),
     }),

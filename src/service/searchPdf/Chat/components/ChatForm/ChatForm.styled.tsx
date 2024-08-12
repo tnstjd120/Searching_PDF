@@ -3,13 +3,13 @@ import { styled } from '@mui/material';
 export const StyledChatForm = styled('form')`
   border-top: 1px solid ${({ theme }) => theme.palette.divider};
   width: 100%;
-  height: 40px;
+  height: 120px;
   position: relative;
   overflow: hidden;
   transition: height 0.15s ease-in-out;
 
   &:has(textarea:focus) {
-    height: 120px;
+    /* height: 120px; */
 
     /* background-color: ${({ theme }) => theme.palette.greyBlue[200]};
 
@@ -28,6 +28,10 @@ export const StyledChatForm = styled('form')`
     border: 0;
     outline: none;
     resize: none;
+
+    &:disabled {
+      background-color: ${({ theme }) => theme.palette.grey[200]};
+    }
 
     &::placeholder {
       color: ${({ theme }) => theme.palette.grey[400]};

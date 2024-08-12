@@ -1,5 +1,5 @@
 import { EngineType } from '@/types/Engine';
-import { Box, ListItem, Stack, styled } from '@mui/material';
+import { Box, IconButton, ListItem, Stack, styled } from '@mui/material';
 
 export const StyledMessage = styled(ListItem, { shouldForwardProp: (props) => props !== 'isMe' })<{ isMe: boolean }>`
   width: 100%;
@@ -25,12 +25,14 @@ export const ProfileArea = styled(Box)`
 `;
 
 export const StyledMessageInner = styled(Stack, {
-  shouldForwardProp: (props) => props !== 'isMe' && props !== 'time' && props !== 'varinat' && props !== 'activeEngine',
+  shouldForwardProp: (props) =>
+    props !== 'isMe' && props !== 'time' && props !== 'varinat' && props !== 'activeEngine' && props !== 'messageColor',
 })<{
   isMe: boolean;
   time: string;
   variant: 'speechBubble' | 'radius';
   activeEngine: EngineType;
+  messageColor?: string;
 }>`
   max-width: calc(100% - 100px);
   border-radius: 8px;
@@ -41,8 +43,8 @@ export const StyledMessageInner = styled(Stack, {
   unicode-bidi: isolate;
   box-shadow: 0 3px 12px rgba(120, 120, 120, 0.1);
 
-  background-color: ${({ theme }) => theme.palette.background.paper};
-  border-color: ${({ theme }) => theme.palette.background.paper};
+  background-color: ${({ theme, messageColor }) => (messageColor ? messageColor : theme.palette.background.paper)};
+  border-color: ${({ theme, messageColor }) => (messageColor ? messageColor : theme.palette.background.paper)};
 
   ${({ theme, isMe, activeEngine }) =>
     isMe &&
@@ -103,4 +105,19 @@ export const StyledMessageInner = styled(Stack, {
           }
       }
     `}
+`;
+
+export const FeedBackButton = styled(IconButton)`
+  position: absolute;
+  right: 0;
+  top: -8px;
+  color: ${({ theme }) => theme.palette.divider};
+
+  & svg {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.palette.grey[500]};
+  }
 `;

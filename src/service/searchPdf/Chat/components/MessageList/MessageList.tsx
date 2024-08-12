@@ -14,7 +14,7 @@ const MessageList = () => {
       {chatMessages.map((item, i) => {
         const questionMessage = (
           <Message
-            key={`question-${i}`}
+            key={item.question.id}
             message={item.question.message}
             time={item.question.createdAt.split('T')[1]}
             isMe
@@ -28,11 +28,17 @@ const MessageList = () => {
             return (
               <Message
                 key={`answer-${answerMessageIndex}`}
-                renderProfile={answerMessageIndex === 0 && <ProfileImage />}
+                renderProfile={
+                  answerMessageIndex === 0 && (
+                    <ProfileImage color={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'} />
+                  )
+                }
                 variant={answerMessageIndex > 0 ? 'radius' : undefined}
                 message={answerMessage}
+                engineLogId={answerMessageIndex === 0 && item.answer?.id}
                 time={answerMessageTime}
                 mt={answerMessageIndex > 0 ? '8px' : undefined}
+                messageColor={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'}
               />
             );
           })
