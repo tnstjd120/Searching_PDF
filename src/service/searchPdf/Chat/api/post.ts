@@ -30,7 +30,6 @@ export const postChatFeedback = async (engineLogId: number) => {
 
   try {
     const response = await api.post(API_PATH.FEEDBACK, { engineLogId: engineLogId });
-    console.log('response: ', response);
     return response.data.result;
   } catch (error) {
     if (axios.isAxiosError(error)) {
