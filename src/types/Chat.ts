@@ -23,7 +23,7 @@ export interface IQuantumAnswer {
   id: number;
   message: TMessage[];
   rank: TQuantumAnswerRank[];
-  engineId: TEngine;
+  engineType: TEngine;
   createdAt: string;
 }
 
@@ -43,7 +43,7 @@ export interface IGptQuestion {
 export interface IGptAnswer {
   id: number;
   message: TMessage[];
-  engineId: TEngine;
+  engineType: TEngine;
   createdAt: string;
 }
 
