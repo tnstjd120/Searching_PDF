@@ -1,12 +1,4 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, DialogActions, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import * as S from './FeedbackDialog.styled';
 
 interface IFeedbackDialog {

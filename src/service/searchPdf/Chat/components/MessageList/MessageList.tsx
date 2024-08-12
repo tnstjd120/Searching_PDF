@@ -5,16 +5,9 @@ import Message from '../Message/Message';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import CircularProgressWithBlur from '@/components/common/Progress/CircularProgressWithBlur';
 import MessageByLoading from '../Message/MessageByLoading';
-import { useEffect, useRef } from 'react';
 
 const MessageList = () => {
   const { chatMessages, isLoading } = useGetChatMessages();
-
-  const messageEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (messageEndRef.current) messageEndRef.current.scrollIntoView();
-  }, [chatMessages]);
 
   return (
     <S.StyledMessageList>
@@ -35,12 +28,17 @@ const MessageList = () => {
             return (
               <Message
                 key={`answer-${answerMessageIndex}`}
-                renderProfile={answerMessageIndex === 0 && <ProfileImage />}
+                renderProfile={
+                  answerMessageIndex === 0 && (
+                    <ProfileImage color={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'} />
+                  )
+                }
                 variant={answerMessageIndex > 0 ? 'radius' : undefined}
                 message={answerMessage}
                 engineLogId={answerMessageIndex === 0 && item.answer?.id}
                 time={answerMessageTime}
                 mt={answerMessageIndex > 0 ? '8px' : undefined}
+                messageColor={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'}
               />
             );
           })
@@ -57,7 +55,6 @@ const MessageList = () => {
       })}
 
       {isLoading && <CircularProgressWithBlur scope="global" />}
-      <div ref={messageEndRef} />
     </S.StyledMessageList>
   );
 };

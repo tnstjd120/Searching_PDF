@@ -1,13 +1,18 @@
-import { useActiveEngine, useChatMessages, useSetChatMessages } from '@/store/useChatStore';
+import { useActiveEngine, useChatMessages, useSetChatMessages, useSetIsTyping } from '@/store/useChatStore';
 import { getChatMessages } from '../api/get';
 import { useEffect, useState } from 'react';
 
 const useGetChatMessages = () => {
   const activeEngine = useActiveEngine();
   const setChatMessages = useSetChatMessages();
+  const setIsTyping = useSetIsTyping();
 
   const [isLoading, setIsLoading] = useState(false);
   const chatMessages = useChatMessages(activeEngine);
+
+  useEffect(() => {
+    setIsTyping(false);
+  }, []);
 
   useEffect(() => {
     (async () => {
