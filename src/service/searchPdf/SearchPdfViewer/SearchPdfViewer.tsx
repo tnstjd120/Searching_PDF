@@ -17,7 +17,9 @@ const SearchPdfViewer = () => {
   const activeChatRank = useActiveChatRank();
 
   useEffect(() => {
-    if (activeChatRank?.page) jumpToPage(activeChatRank?.page);
+    if (activeChatRank?.page) {
+      jumpToPage(activeChatRank?.page > 1 ? activeChatRank?.page - 1 : activeChatRank?.page);
+    }
   }, [activeChatRank]);
 
   return (
@@ -50,11 +52,13 @@ const SearchPdfViewer = () => {
       {activeChatRank?.pdfPath ? (
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
           <Viewer
-            fileUrl={`${import.meta.env.VITE_APP_BASE_STORAGE_URL}${activeChatRank.pdfPath}`}
+            fileUrl={`/storage${activeChatRank.pdfPath}`}
             renderLoader={(percentages: number) => <CircularProgressWithLabel value={percentages} />}
-            defaultScale={SpecialZoomLevel.PageWidth}
+            defaultScale={SpecialZoomLevel.PageFit}
             plugins={[pageNavigationPluginInstance]}
-            initialPage={activeChatRank?.page}
+            initialPage={
+              activeChatRank?.page && activeChatRank?.page > 1 ? activeChatRank.page - 1 : activeChatRank?.page
+            }
           />
         </Worker>
       ) : (
