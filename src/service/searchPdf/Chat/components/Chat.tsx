@@ -21,7 +21,7 @@ const Chat = (_props: IChat, ref: ForwardedRef<HTMLDivElement>) => {
     <S.ChatCard ref={ref} activeEngine={activeEngine}>
       <CardHeader
         title="검색 내용"
-        action={<S.SearchModeSwitch onChange={handleChangeEngineType} defaultChecked />}
+        action={<S.SearchModeSwitch onChange={handleChangeEngineType} checked={activeEngine === EngineType.Quantum} />}
         defaultChecked={false}
         sx={{ backgroundColor: 'white' }}
       />
