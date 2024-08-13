@@ -1,4 +1,4 @@
-# AI Engine 별 PDF Q&A
+# AI Engine PDF Q&A
 
 ### Stack
 
