@@ -25,20 +25,9 @@ export const postChatMessage = async (
   }
 };
 
-export const postChatFeedback = async (engineLogId: number) => {
+export const postChatFeedback = async (engineLogId: number, feedback: string) => {
   if (engineLogId === 0) return;
 
-  try {
-    const response = await api.post(API_PATH.FEEDBACK, { engineLogId: engineLogId });
-    return response.data.result;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error?.response?.data.message;
-      enqueueSnackbar(message || '문제가 발생했습니다.', { variant: 'error' });
-    } else {
-      enqueueSnackbar('문제가 발생했습니다.', { variant: 'error' });
-    }
-
-    throw new Error(`postChatFeedback Error - ${error}`);
-  }
+  const response = await api.post(API_PATH.FEEDBACK, { engineId: engineLogId, feedback: feedback });
+  return response.data.result;
 };
