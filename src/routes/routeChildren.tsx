@@ -29,7 +29,7 @@ const routeChildren: ExtendedRouteObject[] = [
   {
     isInNav: true,
     path: 'search/pdf',
-    name: 'Search in PDF',
+    name: 'Chat',
     element: (
       <AuthRoute>
         <SearchPdf />
