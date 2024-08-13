@@ -96,7 +96,7 @@ const Message = ({
         )}
       </S.StyledMessageInner>
 
-      <FeedbackDialog open={openFeedback} onClose={handleCloseFeedbackDialog} />
+      <FeedbackDialog open={openFeedback} onClose={handleCloseFeedbackDialog} engineLogId={engineLogId || 0} />
 
       {!isMe && engineLogId && (
         <S.FeedBackButton onClick={handleOpenFeedbackDialog}>
