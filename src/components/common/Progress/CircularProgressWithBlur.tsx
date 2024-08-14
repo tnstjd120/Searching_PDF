@@ -1,16 +1,17 @@
 import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material';
+import { SxProps, styled } from '@mui/material';
 import { createPortal } from 'react-dom';
 
 interface ICircularProgressWithBlur extends CircularProgressProps {
   scope?: 'global' | 'local';
+  sx?: SxProps;
 }
 
-function CircularProgressWithBlur({ scope = 'local', ...circularProps }: ICircularProgressWithBlur) {
+function CircularProgressWithBlur({ scope = 'local', sx, ...circularProps }: ICircularProgressWithBlur) {
   if (scope === 'global') {
     return createPortal(
-      <StyledCircularProgressWithBlur sx={{ position: 'fixed' }}>
+      <StyledCircularProgressWithBlur sx={{ position: 'fixed', ...sx }}>
         <CircularProgress {...circularProps} />
       </StyledCircularProgressWithBlur>,
       document.body,
@@ -18,7 +19,7 @@ function CircularProgressWithBlur({ scope = 'local', ...circularProps }: ICircul
   }
 
   return (
-    <StyledCircularProgressWithBlur>
+    <StyledCircularProgressWithBlur sx={{ ...sx }}>
       <CircularProgress {...circularProps} />
     </StyledCircularProgressWithBlur>
   );

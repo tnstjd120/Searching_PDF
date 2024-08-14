@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '@/assets/images/logo.svg';
-import { checkAuth } from '@/auth/checkAuth';
+import { checkAdmin, checkAuth } from '@/auth/checkAuth';
 import routeChildren from '@/routes/routeChildren';
 import { useEffect } from 'react';
 
@@ -24,6 +24,8 @@ const Header = () => {
             if (route.isInNav) {
               if (routePath === 'login' && checkAuth()) return null;
               if (routePath === 'logout' && !checkAuth()) return null;
+
+              if (route.onlyAdmin && !checkAdmin()) return null;
 
               return (
                 <li key={routePath}>
