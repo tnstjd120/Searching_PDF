@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { IDashboard } from '@/types/AdminDashboard';
 import { getUsers } from '../api/get';
+import { IUserResponse } from '@/types/User';
 
-const useGetUsers = () =>
-  useQuery<IDashboard>({
-    queryKey: ['adminUsers'],
-    queryFn: getUsers,
+const useGetUsers = (numberPerPage: number, pageNumber: number) =>
+  useQuery<IUserResponse>({
+    queryKey: ['adminUsers', numberPerPage, pageNumber],
+    queryFn: () => getUsers({ numberPerPage, pageNumber }),
   });
 
 export default useGetUsers;

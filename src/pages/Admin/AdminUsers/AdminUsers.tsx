@@ -1,14 +1,8 @@
-import UsersTable from '@/service/Admin/AdminUsers/components/UsersTable';
+import UsersTable from '@/service/Admin/AdminUsers/components/Users/UsersTable';
 import { useNavigate } from 'react-router-dom';
 
 const AdminUsers = () => {
-  const navigate = useNavigate();
-
-  return (
-    <>
-      <UsersTable />
-    </>
-  );
+  return <UsersTable />;
 };
 
 export default AdminUsers;
