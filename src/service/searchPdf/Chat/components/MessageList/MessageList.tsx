@@ -6,8 +6,12 @@ import ProfileImage from '../ProfileImage/ProfileImage';
 import CircularProgressWithBlur from '@/components/common/Progress/CircularProgressWithBlur';
 import MessageByLoading from '../Message/MessageByLoading';
 
-const MessageList = () => {
-  const { chatMessages, isLoading } = useGetChatMessages();
+interface IMessageList {
+  readOnly?: boolean;
+}
+
+const MessageList = ({ readOnly = false }: IMessageList) => {
+  const { chatMessages, isLoading } = useGetChatMessages(readOnly);
 
   return (
     <S.StyledMessageList>
@@ -30,7 +34,10 @@ const MessageList = () => {
                 key={`answer-${answerMessageIndex}`}
                 renderProfile={
                   answerMessageIndex === 0 && (
-                    <ProfileImage color={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'} />
+                    <ProfileImage
+                      engineType={item.answer?.engineType ?? 'answerEngineQt'}
+                      color={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'}
+                    />
                   )
                 }
                 variant={answerMessageIndex > 0 ? 'radius' : undefined}
