@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAdminDashboard } from '../api/get';
-import { IAdminDashboard } from '@/types/AdminDashboard';
+import { IDashboard } from '@/types/AdminDashboard';
 
 const useGetAdminDashboard = () =>
-  useQuery<IAdminDashboard>({
+  useQuery<IDashboard>({
     queryKey: ['adminDashboard'],
     queryFn: getAdminDashboard,
     refetchInterval: 1000 * 10,

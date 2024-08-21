@@ -24,3 +24,19 @@ export const getChatMessages = async (
     throw new Error(`getChatMessages Error - ${error}`);
   }
 };
+
+export const getChatMessagesWithAdmin = async (userId: string | number) => {
+  try {
+    const response = await api.get(`${API_PATH.USERS}/${userId}`);
+    return response.data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data.message;
+      enqueueSnackbar(message || '문제가 발생했습니다.', { variant: 'error' });
+    } else {
+      enqueueSnackbar('문제가 발생했습니다.', { variant: 'error' });
+    }
+
+    throw new Error(`getChatMessages Error - ${error}`);
+  }
+};

@@ -1,14 +1,7 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import UserDetail from '@/service/Admin/AdminUsers/components/User/UserDetail';
 
 const AdminUser = () => {
-  const { userId } = useParams();
-
-  useEffect(() => {
-    console.log('userId: ', userId);
-  }, [userId]);
-
-  return <>userPk: {userId}</>;
+  return <UserDetail />;
 };
 
 export default AdminUser;
