@@ -14,7 +14,6 @@ export const getFeedbackByUser = async (userPk: string | number) => {
 };
 
 export const getFeedbackByTarget = async (feedbackPk: string | number) => {
-  console.log('feedbackPk: ', feedbackPk);
   const response = await api.get(`${API_PATH.FEEDBACK}/${feedbackPk}`);
   return response.data.result;
 };
