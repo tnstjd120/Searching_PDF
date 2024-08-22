@@ -26,7 +26,7 @@ const AdminSidebar = () => {
             return (
               <Fragment key={route.path ?? '/admin'}>
                 <ListItem onClick={() => hasChildren && handleToggleSubmenu(route.path ?? '/admin')}>
-                  <NavLink to={route.path ?? '/admin'} end>
+                  <NavLink to={route.path ?? '/admin'} end={!route?.path}>
                     {route.name}
                   </NavLink>
                   {hasChildren && (openSubMenu[route.path ?? '/admin'] ? <ExpandLess /> : <ExpandMore />)}
