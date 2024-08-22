@@ -1,11 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { getFeedbackByUser } from '../api/get';
-import { IFeedbackResponse } from '@/types/Feedback';
+import { getFeedbackByTarget } from '../api/get';
+import { IFeedbackResponseByTarget } from '@/types/Feedback';
 
-const useGetFeedback = (userPk: string | number) =>
-  useQuery<IFeedbackResponse[]>({
-    queryKey: ['userFeedback', userPk],
-    queryFn: () => getFeedbackByUser(userPk),
+const useGetFeedback = (feedbackPk: string | number | null) =>
+  useQuery<IFeedbackResponseByTarget>({
+    queryKey: ['feedbackByTarget', feedbackPk],
+    queryFn: () => {
+      console.log('useGetFeedback: ', feedbackPk);
+      if (feedbackPk === null) {
+        return Promise.resolve([]);
+      }
+
+      return getFeedbackByTarget(feedbackPk);
+    },
+    enabled: !!feedbackPk,
   });
 
 export default useGetFeedback;

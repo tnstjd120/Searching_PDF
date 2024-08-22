@@ -46,6 +46,7 @@ const MessageList = ({ readOnly = false }: IMessageList) => {
                 time={answerMessageTime}
                 mt={answerMessageIndex > 0 ? '8px' : undefined}
                 messageColor={item.answer?.engineType === 'answerEngineQt' ? '#e2e6d9' : '#ffffff'}
+                readOnly={readOnly}
               />
             );
           })

@@ -15,6 +15,7 @@ interface IMessage {
   time?: string;
   mt?: string;
   messageColor?: string;
+  readOnly?: boolean;
 }
 
 const Message = ({
@@ -26,9 +27,9 @@ const Message = ({
   time,
   mt,
   messageColor,
+  readOnly = false,
 }: IMessage) => {
   const activeEngine = useActiveEngine();
-  // const setIsTyping = useSetIsTyping();
 
   const [openFeedback, setOpenFeedback] = useState(false);
 
@@ -98,7 +99,7 @@ const Message = ({
 
       <FeedbackDialog open={openFeedback} onClose={handleCloseFeedbackDialog} engineLogId={engineLogId || 0} />
 
-      {!isMe && engineLogId && (
+      {!isMe && engineLogId && !readOnly && (
         <S.FeedBackButton onClick={handleOpenFeedbackDialog}>
           <FeedbackOutlined />
         </S.FeedBackButton>

@@ -1,5 +1,5 @@
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
-import useGetFeedback from '../../hooks/useGetFeedback';
+import useGetFeedbackByUser from '../../hooks/useGetFeedbackByUser';
 import { useParams } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -15,12 +15,13 @@ const UserFeedbackPanel = ({ value, index }: IUserFeedbackPanel) => {
   const theme = useTheme();
 
   const { userId } = useParams();
-  const { data, isLoading, error, refetch } = useGetFeedback(userId ?? 0);
+  const { data, isLoading, error, refetch } = useGetFeedbackByUser(userId ?? 0);
 
-  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [currentFeedbackId, setCurrentFeedbackId] = useState<string | number | null>(null);
+  // const [feedbackModalOpen, setFeedbackModalOpen] = useState<string | number | false>(false);
 
-  const handleOpenModal = () => setFeedbackModalOpen(true);
-  const handleCloseModal = () => setFeedbackModalOpen(false);
+  const handleOpenModal = (feedbackId: string | number) => setCurrentFeedbackId(feedbackId);
+  const handleCloseModal = () => setCurrentFeedbackId(null);
 
   if (error) enqueueSnackbar('피드백 정보를 불러오는데 실패했습니다.', { variant: 'error' });
 
@@ -28,10 +29,10 @@ const UserFeedbackPanel = ({ value, index }: IUserFeedbackPanel) => {
 
   const handleClickFeedback = (feedbackId: string | number) => {
     mutate(feedbackId, {
-      onSuccess: (result) => {
-        console.log('읽음처리: ', result);
+      onSuccess: () => {
         refetch();
-        handleOpenModal();
+        setCurrentFeedbackId(feedbackId);
+        handleOpenModal(feedbackId);
       },
     });
   };
@@ -52,13 +53,13 @@ const UserFeedbackPanel = ({ value, index }: IUserFeedbackPanel) => {
               Sender
             </TableCell>
             <TableCell width="120px" sx={{ backgroundColor: theme.palette.greyBlue[100] }}>
-              Sender At
+              Send At
             </TableCell>
             <TableCell width="100px" sx={{ backgroundColor: theme.palette.greyBlue[100] }}>
               Reader
             </TableCell>
             <TableCell width="120px" sx={{ backgroundColor: theme.palette.greyBlue[100] }}>
-              Reader At
+              Read At
             </TableCell>
           </TableRow>
         </TableHead>
@@ -89,7 +90,7 @@ const UserFeedbackPanel = ({ value, index }: IUserFeedbackPanel) => {
         </TableBody>
       </Table>
 
-      <FeedbackModal open={feedbackModalOpen} onClose={handleCloseModal} />
+      <FeedbackModal feedbackId={currentFeedbackId} onClose={handleCloseModal} />
     </Box>
   );
 };
