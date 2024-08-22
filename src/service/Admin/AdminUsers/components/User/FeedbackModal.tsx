@@ -1,38 +1,151 @@
-import { Box, Grid, Modal, Typography } from '@mui/material';
+import { Box, IconButton, Modal, Stack, Typography, styled } from '@mui/material';
+import { Fragment, useEffect } from 'react';
+import useGetFeedback from '../../hooks/useGetFeedback';
+import { enqueueSnackbar } from 'notistack';
+import { CloseOutlined } from '@mui/icons-material';
 
 interface IFeedbackModal {
-  open: boolean;
+  feedbackId: string | number | null;
   onClose: () => void;
+  //   feedbackId: string | number | null;
 }
 
-const FeedbackModal = ({ open, onClose }: IFeedbackModal) => {
+const FeedbackModal = ({ feedbackId, onClose }: IFeedbackModal) => {
+  const { data, error, refetch } = useGetFeedback(feedbackId);
+
+  useEffect(() => {
+    if (feedbackId) refetch();
+  }, [feedbackId, open, refetch]);
+
+  if (error) enqueueSnackbar('피드백 정보를 불러오는데 실패했습니다.', { variant: 'error' });
+
+  const question = data?.question ?? '질문 내용이 없습니다.';
+  const answer = data?.answer ?? '답변 내용이 없습니다.';
+  const feedback = data?.feedback ?? '피드백 내용이 없습니다.';
+
   return (
     <div>
-      <Modal open={open} onClose={onClose}>
-        <Box>
-          <Typography id="modal-modal-title" variant="h6" component="h5">
-            Feedback Detail
+      <Modal open={!!feedbackId} onClose={onClose}>
+        <StyledModalContent>
+          <Typography
+            variant="h6"
+            component="h5"
+            borderBottom="1px solid #ddd"
+            sx={{ paddingBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            <span>피드백 정보</span>
+
+            <IconButton onClick={onClose}>
+              <CloseOutlined />
+            </IconButton>
           </Typography>
 
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+          <Box>
+            <Stack gap="10px">
+              <Box sx={{ borderBottom: '1px solid #ddd', paddingBlock: '20px' }}>
                 <Typography variant="subtitle1">질문 내용</Typography>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="subtitle1">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste mollitia dolorum qui ipsum ducimus
-                  corporis minus ipsam enim tempora hic magnam voluptate assumenda libero quis nostrum, nobis debitis
-                  quibusdam similique.
+                <Typography component="p" variant="caption">
+                  {typeof question === 'object' ? question?.message : question}
                 </Typography>
-              </Grid>
-            </Grid>
-          </Typography>
-        </Box>
+              </Box>
+
+              <Box sx={{ borderBottom: '1px solid #ddd', paddingBottom: '20px' }}>
+                <Typography variant="subtitle1">
+                  답변 내용 &nbsp;
+                  {typeof answer === 'object' && (
+                    <Typography variant="caption" color="primary">
+                      ({answer.engineType})
+                    </Typography>
+                  )}
+                </Typography>
+
+                {typeof answer === 'object' ? (
+                  answer.message.map((msg, i) => (
+                    <Fragment key={i}>
+                      {msg.type === 'text' ? (
+                        <StyledMessage>
+                          <Typography component="p" variant="caption">
+                            {msg.value}
+                          </Typography>
+                        </StyledMessage>
+                      ) : (
+                        <StyledMessage>
+                          <img src={`/storage${msg.value}`} />
+                        </StyledMessage>
+                      )}
+                    </Fragment>
+                  ))
+                ) : (
+                  <Typography component="p" variant="caption">
+                    {answer}
+                  </Typography>
+                )}
+              </Box>
+
+              <Box sx={{ paddingBottom: '10px' }}>
+                <Typography variant="subtitle1">피드백 내용</Typography>
+                <Typography component="p" variant="caption">
+                  {typeof feedback === 'object' ? feedback?.message : feedback}
+                </Typography>
+
+                {typeof feedback === 'object' && (
+                  <Box sx={{ fontSize: '0.725rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    <Typography variant="caption" color="grey">
+                      Sender: {feedback.sender.userName}
+                    </Typography>
+                    <Typography variant="caption" color="grey">
+                      Send At: {feedback.createdAt.split('T')[0]}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </Stack>
+          </Box>
+        </StyledModalContent>
       </Modal>
     </div>
   );
 };
 
 export default FeedbackModal;
+
+const StyledModalContent = styled(Stack)(
+  ({ theme }) => `
+    background-color: ${theme.palette.background.paper};
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 100%;
+    max-height: calc(100vh - 100px);
+    overflow: auto;
+    max-width: 500px;
+`,
+);
+
+const StyledMessage = styled(Box)(
+  ({ theme }) => `
+    background-color: ${theme.palette.background.paper};
+    width: 100%;
+    max-width: calc(100% - 100px);
+    border-radius: 8px;
+    padding: 8px 12px;
+    position: relative;
+    word-break: break-word;
+    white-space: pre-wrap;
+    unicode-bidi: isolate;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    background-color: ${theme.palette.background.paper};
+    border-color: ${theme.palette.background.paper}; 
+    margin-top: 8px;
+`,
+);
+
+const StyledCloseButton = styled(IconButton)(
+  ({ theme }) => `
+  position: absolute;
+  right: 10px;
+  top: 10px;
+`,
+);
