@@ -72,11 +72,6 @@ const Message = ({
     };
   }, [messageContainerRef]);
 
-  // const handleClickFeedback = async (engineLogId: number) => {
-  //   const responseFeedback = await postChatFeedback(engineLogId);
-  //   console.log('responseFeedback: ', responseFeedback);
-  // };
-
   return (
     <S.StyledMessage ref={messageContainerRef} isMe={Boolean(isMe)} sx={{ mt: `${mt} !important` }}>
       <S.ProfileArea>{renderProfile && renderProfile}</S.ProfileArea>

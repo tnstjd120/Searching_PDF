@@ -1,7 +1,7 @@
 import { Skeleton, Stack } from '@mui/material';
 import TodayCard from './TodayCard';
 import { ITodayStatistics } from '@/types/AdminDashboard';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface IDashboardLeft extends ITodayStatistics {
   isSkeleton?: boolean;
@@ -14,10 +14,6 @@ const DashboardLeft = ({
   userFeAverage,
   isSkeleton = false,
 }: IDashboardLeft) => {
-  useEffect(() => {
-    console.log('isSkeleton: ', isSkeleton);
-  }, [isSkeleton]);
-
   if (isSkeleton) {
     return (
       <Stack gap="20px" flex="1" height="100%">

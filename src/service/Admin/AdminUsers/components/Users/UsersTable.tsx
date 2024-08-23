@@ -1,6 +1,6 @@
-import { Box, Table, TableCell, TableHead, TablePagination, TableRow, useTheme } from '@mui/material';
+import { Box, Table, TablePagination } from '@mui/material';
 import useGetUsers from '../../hooks/useGetUsers';
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import UsersTableBody from './UsersTableBody';
 import UsersTableBodySkeleton from './UsersTableBodyWithSkeleton';
@@ -12,14 +12,9 @@ const UsersTable = () => {
 
   const { data, isLoading, error } = useGetUsers(numberPerPage, pageNumber + 1);
 
-  useEffect(() => {
-    console.log('data: ', data);
-  }, [data]);
-
   if (error) enqueueSnackbar('유저 데이터를 불러오는데 실패했습니다.', { variant: 'error' });
 
   const handleChagePage = (_event: unknown, newPage: number) => {
-    console.log('newPage: ', newPage);
     setPageNumber(newPage);
   };
 

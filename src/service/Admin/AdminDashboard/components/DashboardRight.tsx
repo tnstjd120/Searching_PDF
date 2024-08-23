@@ -20,7 +20,7 @@ interface IDahsboardRight extends Omit<IDashboard, 'today'> {
   isSkeleton?: boolean;
 }
 
-const DashboardRight = ({ month, arrayTotal, isSkeleton }: IDahsboardRight) => {
+const DashboardRight = ({ arrayTotal, isSkeleton }: IDahsboardRight) => {
   const { totalData, averageData } = arrayTotal.reduce<{ totalData: BarDatum[]; averageData: IAverageData[] }>(
     (acc, cur) => {
       acc.totalData.push({

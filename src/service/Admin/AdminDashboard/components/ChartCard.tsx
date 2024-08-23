@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Typography, styled } from '@mui/material';
+import { Card, CardContent, CardHeader, styled } from '@mui/material';
 
 const ChartCard = () => {
   return (
