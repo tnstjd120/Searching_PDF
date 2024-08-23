@@ -49,5 +49,3 @@ box-shadow: 0px 5px 5px -3px rgba(210, 210, 210, 0.2), 0px 8px 10px 1px rgba(210
   }
 `,
 );
-
-const StyledCaption = styled(Typography)``;
