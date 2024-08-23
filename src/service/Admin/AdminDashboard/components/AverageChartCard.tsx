@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Typography, styled } from '@mui/material';
+import { Card, CardContent, CardHeader, styled } from '@mui/material';
 import { ResponsiveLine, Serie } from '@nivo/line';
 
 interface IAverageChartCard {
@@ -103,13 +103,3 @@ const StyledCard = styled(Card)`
     /* padding: 4px; */
   }
 `;
-
-const StyledChartTooltip = styled(Typography)(
-  ({ theme }) => `
-    background-color: ${theme.palette.background.paper};
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0px 5px 5px -3px rgba(100, 100, 100, 0.2), 0px 8px 10px 1px rgba(100, 100, 100, 0.14),
-    0px 3px 14px 2px rgba(100, 100, 100, 0.12);
-`,
-);

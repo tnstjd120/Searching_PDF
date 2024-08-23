@@ -1,17 +1,16 @@
 import { Box, IconButton, Modal, Stack, Typography, styled } from '@mui/material';
 import { Fragment, useEffect } from 'react';
-import useGetFeedback from '../../hooks/useGetFeedback';
+import useGetFeedbackByTarget from '../../hooks/useGetFeedbackByTarget';
 import { enqueueSnackbar } from 'notistack';
 import { CloseOutlined } from '@mui/icons-material';
 
 interface IFeedbackModal {
   feedbackId: string | number | null;
   onClose: () => void;
-  //   feedbackId: string | number | null;
 }
 
 const FeedbackModal = ({ feedbackId, onClose }: IFeedbackModal) => {
-  const { data, error, refetch } = useGetFeedback(feedbackId);
+  const { data, error, refetch } = useGetFeedbackByTarget(feedbackId);
 
   useEffect(() => {
     if (feedbackId) refetch();
@@ -82,9 +81,11 @@ const FeedbackModal = ({ feedbackId, onClose }: IFeedbackModal) => {
                 )}
               </Box>
 
-              <Box sx={{ paddingBottom: '10px' }}>
-                <Typography variant="subtitle1">피드백 내용</Typography>
-                <Typography component="p" variant="caption">
+              <StyledFeedbackBox>
+                <Typography component="h6" variant="subtitle1">
+                  피드백 내용
+                </Typography>
+                <Typography component="p" variant="caption" sx={{ padding: '12px 12px 24px' }}>
                   {typeof feedback === 'object' ? feedback?.message : feedback}
                 </Typography>
 
@@ -98,7 +99,7 @@ const FeedbackModal = ({ feedbackId, onClose }: IFeedbackModal) => {
                     </Typography>
                   </Box>
                 )}
-              </Box>
+              </StyledFeedbackBox>
             </Stack>
           </Box>
         </StyledModalContent>
@@ -142,10 +143,13 @@ const StyledMessage = styled(Box)(
 `,
 );
 
-const StyledCloseButton = styled(IconButton)(
+const StyledFeedbackBox = styled(Box)(
   ({ theme }) => `
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  background-color: ${theme.palette.greyBlue[200]};
+  padding: 10px;
+
+  h6 {
+    text-align: center;
+  }
 `,
 );
