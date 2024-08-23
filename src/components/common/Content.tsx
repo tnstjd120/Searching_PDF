@@ -13,6 +13,6 @@ export default Content;
 const StyledContent = styled(Box)`
   width: 100%;
   height: 100vh;
-  padding: 20px;
-  padding-top: 70px;
+  /* padding: 20px; */
+  padding-top: 50px;
 `;

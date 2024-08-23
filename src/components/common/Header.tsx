@@ -1,9 +1,15 @@
 import { Box, styled } from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import routeChildren from '@/routes/routeChildren';
+import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '@/assets/images/logo.svg';
+import { checkAdmin, checkAuth } from '@/auth/checkAuth';
+import routeChildren from '@/routes/routeChildren';
+import { useEffect } from 'react';
 
 const Header = () => {
+  const pathname = useLocation().pathname;
+
+  useEffect(() => {}, [pathname]);
+
   return (
     <StyledHeader>
       <StyledLogo>
@@ -15,13 +21,18 @@ const Header = () => {
           {routeChildren.map((route) => {
             const routePath = route.path ?? '/';
 
-            return (
-              route.isInNav && (
+            if (route.isInNav) {
+              if (routePath === 'login' && checkAuth()) return null;
+              if (routePath === 'logout' && !checkAuth()) return null;
+
+              if (route.onlyAdmin && !checkAdmin()) return null;
+
+              return (
                 <li key={routePath}>
                   <NavLink to={routePath}>{route.name}</NavLink>
                 </li>
-              )
-            );
+              );
+            }
           })}
         </ul>
       </StyledNav>
@@ -45,6 +56,7 @@ const StyledHeader = styled(Box)`
   background-color: ${({ theme }) => theme.palette.background.paper};
   /* border-bottom: 1px solid ${({ theme }) => theme.palette.divider}; */
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.1);
+  z-index: 3;
 `;
 
 const StyledLogo = styled(Box)`
